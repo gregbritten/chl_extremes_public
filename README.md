@@ -1,1 +1,1 @@
-# chl_extremes_public
+# Code developed for *Extreme value distributions describe interannual variability in the North Atlantic spring bloom* by Gregory Britten; submitted to *Limnology & Oceanography Letters*
