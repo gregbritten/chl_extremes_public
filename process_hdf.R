@@ -20,17 +20,17 @@ print(i)
   date[i] <- as.character(as.Date(doy, origin = paste(yr,"01","01",sep='-')))
   time[i] <- decimal_date(as.Date(doy, origin = paste(yr,"01","01",sep='-')))
     
-  # tmp_chl    <- as.matrix(readGDAL(paste('~/dropbox/data/ocean_productivity/modis_chl/',  chl_files[i],sep='')))
-  # tmp_sst    <- as.matrix(readGDAL(paste('~/dropbox/data/ocean_productivity/sst/',        sst_files[i],sep='')))
-  # 
-  # tmp_chl[tmp_chl == -9999] <- NA
-  # tmp_sst[tmp_sst == -9999] <- NA
-  # 
-  # mat_chl      <- resize_bilinear(tmp_chl,xin=2160,xout=360*4,yin=1080,yout=180*4)[,720:1]
-  # mat_sst      <- resize_bilinear(tmp_sst,xin=2160,xout=360*4,yin=1080,yout=180*4)[,720:1]
-  # 
-  # chl[,,i] <- mat_chl
-  # sst[,,i] <- mat_sst
+  tmp_chl    <- as.matrix(readGDAL(paste('~/dropbox/data/ocean_productivity/modis_chl/',  chl_files[i],sep='')))
+  tmp_sst    <- as.matrix(readGDAL(paste('~/dropbox/data/ocean_productivity/sst/',        sst_files[i],sep='')))
+
+  tmp_chl[tmp_chl == -9999] <- NA
+  tmp_sst[tmp_sst == -9999] <- NA
+
+  mat_chl      <- resize_bilinear(tmp_chl,xin=2160,xout=360*4,yin=1080,yout=180*4)[,720:1]
+  mat_sst      <- resize_bilinear(tmp_sst,xin=2160,xout=360*4,yin=1080,yout=180*4)[,720:1]
+
+  chl[,,i] <- mat_chl
+  sst[,,i] <- mat_sst
 }
 
 save(file='~/dropbox/working/chlorophyll/data/time.rdata',time)	
