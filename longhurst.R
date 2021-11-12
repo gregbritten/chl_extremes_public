@@ -1,7 +1,7 @@
 library(sf)
 library(R.matlab)
 library(ggplot2)
-source('~/dropbox/CODE/functions/resize_bilinear().R')
+source('~/dropbox/working/chlorophyll/github_extremes_public/functions.r')
 
 long <- readMat('~/dropbox/data/longhurst/Longhurst_180.mat')$Longhurst
 image.plot(long)
@@ -23,6 +23,7 @@ image.plot(x=lons[lonsi], y=lats[latsi], round(longdeg)[lonsi,latsi])
 #########################################################
 ##--READ SHAPE FILE--#############################
 longshp <- st_read("~/dropbox/data/longhurst/longhurst_v4_2010/Longhurst_world_v4_2010.shp")
+longshp$NUM <- as.numeric(row.names(longshp))
 
 ##--RASTERIZE SHAPE FILE--#######################
 r0       <- raster(nrow=180*4,ncol=360*4)
@@ -32,18 +33,9 @@ longmat  <- t(as.matrix(longrast))[,(180*4):1]
 ##--PLOT--############################
 #image.plot(lons[lonsi],lats[latsi],longmat[lonsi,latsi],col=turbo(20))
 
-##--PLOTTING FUNCTION--#####################
-image.plot2 <- function(x,y,z,zlim,cols){
-  tmp <- z
-  tmp[tmp<zlim[1]] <- zlim[1]
-  tmp[tmp>zlim[2]] <- zlim[2]
-  image.plot(x=x,y=y,z=tmp,zlim=zlim,col=cols,xaxt='n',yaxt='n',ylab='',xlab='')
-}
-
-
 pdf('~/dropbox/working/chlorophyll/plots/gevd_parameter_maps_longhurst.pdf',height=4.5,width=14)
 par(mfrow=c(1,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
-image.plot2(x=lons[lonsi],y=lats[latsi],location,zlim=c(0,4),col=turbo(20))
+image.plot2(x=lons[lonsi],y=lats[latsi],DAT$location,zlim=c(0,4),col=turbo(20))
   plot(st_geometry(longshp),add=TRUE,border='white',lwd=2)
   map(add=TRUE,col='grey',fill=TRUE)
   axis(side=1); axis(side=2)

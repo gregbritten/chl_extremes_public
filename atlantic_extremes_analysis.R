@@ -9,6 +9,8 @@ library(viridis)
 
 rm(list=ls())
 
+source('~/dropbox/working/chlorophyll/github_extremes_public/functions.R')
+
 ##--LOAD PRE-PROCESSED DATA--###################
 ##uncomment the following for analysis of MODIS chlorophyll
 load('~/dropbox/working/chlorophyll/data/chl.rdata')
@@ -48,25 +50,6 @@ for(i in 1:dim(sst)[3]){
 print(i)
     chl_atl[,,i] <- chl[lonsi,latsi,i]  
     sst_atl[,,i] <- sst[lonsi,latsi,i]
-}
-
-##--FUNCTION TO EXTRACT BLOCK MAXIMA--###################################
-block_maxima <- function(x,date){
-  years <- year(date)
-  months <- month(date)
-  year_ind <- unique(years)
-  maxima=month <- numeric(length(year_ind))
-  for(i in 1:length(year_ind)){
-    mmonths   <- months[years==year_ind[i]]
-    maxima[i] <- max(x[years==year_ind[i]],na.rm=TRUE)
-    month[i]  <- mmonths[x[years==year_ind[i]]==maxima[i]]
-  }
-  return(list(maxima=maxima,month=month))
-}
-
-Mode <- function(x) {
-  ux <- unique(x)
-  ux[which.max(tabulate(match(x, ux)))]
 }
 
 ##--COMPUTE MEAN, MEDIANS, SDS--########################################
@@ -170,12 +153,6 @@ for(i in 1:nlon){ print(i)
       fitlocBIC[i,j] <- 2*fitloc$results$value + log(19)*4
       fitsclBIC[i,j] <- 2*fitscl$results$value + log(19)*4
       fitshpBIC[i,j] <- 2*fitshp$results$value + log(19)*4
-      
-      # rectmp   <- try(exp(calc_logReturnPeriod_fevd(fit,returnValue=max(maxima))$logReturnPeriod),silent=TRUE)
-      # recsetmp <- try(exp(calc_logReturnPeriod_fevd(fit,returnValue=max(maxima))$se_logReturnPeriod),silent=TRUE)
-      # 
-      # record[i,j]    <- ifelse(class(rectmp)=='try-error',NA,rectmp)
-      # record_se[i,j] <- ifelse(class(recsetmp)=='try-error',NA,recsetmp)
 
       ##--STORE QUANTILES--##################
       vv <- plot(fit,type='qq')

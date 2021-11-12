@@ -1,12 +1,16 @@
 rm(list=ls())
+gc()
 
 library(maps)
 setwd('~/dropbox/working/chlorophyll/data/')
 
 load('ATL_DAT.rdata')
 DAT <- DAT
-# load('~/dropbox/working/chlorophyll/data/ATL_DAT_oc.rdata')
+#load('ATL_DAT_oc.rdata')
 # DAT <- DAT_oc
+
+#ocyn <- '_oc'
+ocyn <- ''
 
 lats <- seq(-90,90,length.out=720)
 lons <- seq(-180,180,length.out=1440)
@@ -52,17 +56,17 @@ image.plot2 <- function(x,y,z,zlim,cols){
 ##########################################################################  
 ##--MONTH OF BLOOM--######################################################
 ##########################################################################  
-pdf('~/dropbox/working/chlorophyll/plots/maxmonth.pdf',height=6,width=7)
+pdf(paste0('~/dropbox/working/chlorophyll/plots/maxmonth',ocyn,'.pdf'),height=6,width=7)
 par(mfrow=c(1,1), oma=c(2,2,2,2))
-image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$maxmonth,zlim=c(1,12),col=turbo(12))
-map(add=TRUE,col='grey',fill=TRUE)
-axis(side=1); axis(side=2)
-box(lwd=3)
-mtext(expression('Bloom Month'),adj=0,line=0.5)
-mtext(side=1,line=2.5,'Longitude')
-mtext(side=2,line=2.5,'Latitude')
-dev.off()
+  image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$maxmonth,zlim=c(1,12),col=turbo(12))
+    maps::map(add=TRUE,col='grey',fill=TRUE)
+    axis(side=1); axis(side=2)
+    box(lwd=3)
+      mtext(expression('Bloom Month'),adj=0,line=0.5)
 
+      mtext(side=1,line=2.5,'Longitude')
+      mtext(side=2,line=2.5,'Latitude')
+dev.off()
 
 
 ##########################################################################  
@@ -70,21 +74,11 @@ dev.off()
 ##########################################################################  
 cols <- turbo(20)
 
-#pdf('~/dropbox/working/chlorophyll/plots/gevd_parameter_maps_revision.pdf',height=4.5,width=14)
-pdf('~/dropbox/working/chlorophyll/plots/gevd_parameter_maps_oc_revision.pdf',height=4.5,width=14)
+pdf(paste0('~/dropbox/working/chlorophyll/plots/gevd_parameter_maps',ocyn,'.pdf'),height=4.5,width=14)
 par(mfrow=c(1,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
-  
-  # image.plot2(x=lons[lonsi],y=lats[latsi],z=bathy_atl/1000,zlim=c(0,5),col=cols)
-  #   axis(side=1,labels=NA); axis(side=2)
-  #   #contour(x=lons[lonsi],y=lats[latsi],bathy_atl,add=TRUE,levels=c(50,500,1000,1500,2000,2500,3000))
-  #   map(add=TRUE,col='grey',fill=TRUE)
-  #   box(lwd=3)
-  #   mtext('a) Bathymetry',adj=0,line=0.5)
-  #   mtext('[km]',adj=1.1,line=0.25)
-  
   image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$location,zlim=c(0,4),col=cols)
     contour(x=lons[lonsi],y=lats[latsi],bathy_atl,add=TRUE,levels=c(50,500,1000,1500,2000,2500,3000))
-    map(add=TRUE,col='grey',fill=TRUE)
+    maps::map(add=TRUE,col='grey',fill=TRUE)
     axis(side=1); axis(side=2)
     box(lwd=3)
     mtext(expression('a) Location'~mu),adj=0,line=0.5)
@@ -92,7 +86,7 @@ par(mfrow=c(1,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
   
   image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$scale,zlim=c(-0.5,2),col=cols)
     contour(x=lons[lonsi],y=lats[latsi],bathy_atl,add=TRUE,levels=c(50,500,1000,1500,2000,2500,3000))
-    map(add=TRUE,col='grey',fill=TRUE)
+    maps::map(add=TRUE,col='grey',fill=TRUE)
     axis(side=1); axis(side=2,labels=NA)
     box(lwd=3)
     mtext(expression('b) Scale'~sigma),adj=0,line=0.5)
@@ -100,7 +94,7 @@ par(mfrow=c(1,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
   
   image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$shape,zlim=c(0,2.5),col=cols)
     contour(x=lons[lonsi],y=lats[latsi],bathy_atl,add=TRUE,levels=c(50,500,1000,1500,2000,2500,3000))
-    map(add=TRUE,col='grey',fill=TRUE)
+    maps::map(add=TRUE,col='grey',fill=TRUE)
     axis(side=1); axis(side=2,labels=NA)
     box(lwd=3)
     axis(side=1); axis(side=2,labels=NA)
@@ -116,29 +110,25 @@ dev.off()
 ########################################################################## 
 cols <- turbo(20)
 
-#pdf('~/dropbox/working/chlorophyll/plots/gevd_parameter_se_maps_oc_revision.pdf',height=4.5,width=14)
-pdf('~/dropbox/working/chlorophyll/plots/gevd_parameter_se_maps_revision.pdf',height=4.5,width=14)
+pdf(paste0('~/dropbox/working/chlorophyll/plots/gevd_parameter_se_maps_revision',ocyn,'.pdf'),height=4.5,width=14)
 par(mfrow=c(1,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
 
   image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$location_se/DAT$location,zlim=c(0,0.5),col=cols)
-    #contour(x=lons[lonsi],y=lats[latsi],bathy_atl,add=TRUE,levels=c(50,500,1000,1500,2000,2500,3000))
-    map(add=TRUE,col='grey',fill=TRUE)
+    maps::map(add=TRUE,col='grey',fill=TRUE)
     axis(side=1); axis(side=2)
     box(lwd=3)
     mtext(expression('a) sd('*mu*')/'*mu),adj=0,line=0.5)
     mtext(expression('[unitless]'),adj=1.1,line=0.25)
   
   image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$scale_se/DAT$scale,zlim=c(0,2),col=cols)
-    #contour(x=lons[lonsi],y=lats[latsi],bathy_atl,add=TRUE,levels=c(50,500,1000,1500,2000,2500,3000))
-    map(add=TRUE,col='grey',fill=TRUE)
+    maps::map(add=TRUE,col='grey',fill=TRUE)
     axis(side=1); axis(side=2,labels=NA)
     box(lwd=3)
     mtext(expression('b) sd('*sigma*')/'*sigma),adj=0,line=0.5)
     mtext(expression('[unitless]'),adj=1.1,line=0.25)
   
   image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$shape_se/DAT$shape,zlim=c(0,0.5),col=cols)
-    #contour(x=lons[lonsi],y=lats[latsi],bathy_atl,add=TRUE,levels=c(50,500,1000,1500,2000,2500,3000))
-    map(add=TRUE,col='grey',fill=TRUE)
+    maps::map(add=TRUE,col='grey',fill=TRUE)
     axis(side=1); axis(side=2,labels=NA)
     box(lwd=3)
     axis(side=1); axis(side=2,labels=NA)
@@ -160,21 +150,21 @@ pdf('~/dropbox/working/chlorophyll/plots/gevd_parameter_se_power.pdf',height=4*2
 par(mfrow=c(3,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$location_se/DAT$location,zlim=c(0,0.5),col=cols)
-  map(add=TRUE,col='grey',fill=TRUE)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
   axis(side=1,labels=NA); axis(side=2,labels=NA)
   box(lwd=3)
   mtext(expression('a) sd('*mu*')/'*mu),adj=0,line=0.5)
   mtext(expression('[unitless]'),adj=1.1,line=0.25)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$scale_se/DAT$scale,zlim=c(0,2),col=cols)
-  map(add=TRUE,col='grey',fill=TRUE)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
   axis(side=1,labels=NA); axis(side=2,labels=NA)
   box(lwd=3)
   mtext(expression('b) sd('*sigma*')/'*sigma),adj=0,line=0.5)
   mtext(expression('[unitless]'),adj=1.1,line=0.25)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$shape_se/DAT$shape,zlim=c(0,0.5),col=cols)
-  map(add=TRUE,col='grey',fill=TRUE)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
   axis(side=1,labels=NA); axis(side=2,labels=NA)
   box(lwd=3)
   axis(side=1); axis(side=2,labels=NA)
@@ -182,39 +172,39 @@ image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$shape_se/DAT$shape,zlim=c(0,0.5),c
   mtext(expression('[unitless]'),adj=1.1,line=0.25)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$location_half_se/DAT$location_half,zlim=c(0,0.5),col=cols)
-  map(add=TRUE,col='grey',fill=TRUE)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
   axis(side=1,labels=NA); axis(side=2)
   box(lwd=3)
   mtext(expression('d)'),adj=0,line=0.5)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$scale_half_se/DAT$scale_half,zlim=c(0,2),col=cols)
-  map(add=TRUE,col='grey',fill=TRUE)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
   axis(side=1,labels=NA); axis(side=2,labels=NA)
   box(lwd=3)
   #mtext('Halving Sample Size',line=0.5)
   mtext(expression('e)'),adj=0,line=0.5)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$shape_half_se/DAT$shape_half,zlim=c(0,0.5),col=cols)
-  map(add=TRUE,col='grey',fill=TRUE)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
   axis(side=1,labels=NA); axis(side=2,labels=NA)
   box(lwd=3)
   mtext(expression('f)'),adj=0,line=0.5)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$location_doub_se/DAT$location_doub,zlim=c(0,0.5),col=cols)
-  map(add=TRUE,col='grey',fill=TRUE)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
   axis(side=1); axis(side=2)
   box(lwd=3)
   mtext(expression('g)'),adj=0,line=0.5)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$scale_doub_se/DAT$scale_doub,zlim=c(0,2),col=cols)
-  map(add=TRUE,col='grey',fill=TRUE)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
   axis(side=1); axis(side=2,labels=NA)
   box(lwd=3)
   #mtext('Doubling Sample Size',line=0.5)
   mtext(expression('h)'),adj=0,line=0.5)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$shape_doub_se/DAT$shape_doub,zlim=c(0,0.5),col=cols)
-  map(add=TRUE,col='grey',fill=TRUE)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
   axis(side=1); axis(side=2,labels=NA)
   box(lwd=3)
   mtext(expression('i)'),adj=0,line=0.5)
@@ -314,15 +304,15 @@ dev.off()
 #########################################################################################
 ##--QQ PLOT GOONESS OF FIT--#############################################################
 #########################################################################################
-X   <- cbind(c(qq[,,1,]),c(qq[,,2,]))
+X   <- cbind(c(DAT$qq[,,1,]),c(DAT$qq[,,2,]))
 X2  <- X[X[,1]<10 & X[,1]>1E-5 & X[,2]<10 & X[,2]>1E-5,]  #remote extreme outliers where the parameter optimization failed
 XX  <- X2[sample(size=5000,1:nrow(X2)),]             #take a random sample for plotting purposes
 
 cor(X2[,1],X2[,2],use='pairwise.complete.obs') #evaluate correlation
 cor(log10(X2[,1]),log10(X2[,2]),use='pairwise.complete.obs')
 
-#pdf('~/dropbox/working/chlorophyll/plots/qqplot.pdf',height=4.5, width=9)
-pdf('~/dropbox/working/chlorophyll/plots/qqplot_oc.pdf',height=4.5, width=9)
+pdf('~/dropbox/working/chlorophyll/plots/qqplot.pdf',height=4.5, width=9)
+#pdf('~/dropbox/working/chlorophyll/plots/qqplot_oc.pdf',height=4.5, width=9)
 #layout(matrix(c(1,2,3,3),byrow=TRUE,ncol=2))
 par(mfrow=c(1,2),mar=c(2,3,2,2),oma=c(2,2,2,2),cex.axis=0.8)
   plot(XX[,1],XX[,2],xlim=c(0,10),ylim=c(0,10),pch=16,cex=0.2,bty='n')
@@ -344,8 +334,8 @@ dev.off()
 #pdf('~/dropbox/working/chlorophyll/plots/qqmap.pdf',height=5,width=9)
 pdf('~/dropbox/working/chlorophyll/plots/qqmap_oc.pdf',height=5,width=9)
 par(mfrow=c(1,1))
-  image.plot(x=lons[lonsi],y=lats[latsi],cormap,col=turbo(20),zlim=c(0.7,1.0),xlab='',ylab='')
-  map(add=TRUE)
+  image.plot(x=lons[lonsi],y=lats[latsi],DAT$cormap,col=turbo(20),zlim=c(0.7,1.0),xlab='',ylab='')
+  maps::map(add=TRUE,col='grey',fill=TRUE)
   box(lwd=2)
   mtext(side=1,'Longitude',line=2.5)
   mtext(side=2,'Latitude',line=2.5)
@@ -365,23 +355,23 @@ dBIC_shp[dBIC_shp<0] <- 0
 pdf('~/dropbox/working/chlorophyll/plots/nonstationary_BIC_chl_sst.pdf',height=9,width=10)
 par(mfrow=c(3,2),mar=c(2,2,2,3),oma=c(2,2,2,2))
 image.plot(x=lons[lonsi],y=lats[latsi],dBIC_loc,zlim=c(0,10),col=turbo(20))
-  map(add=TRUE)
+  maps::map(add=TRUE)
   mtext(expression('a) '*Delta*'BIC Location'~mu~'[mgChl/m'^3*']'), adj=0,line=0.25)
   box(lwd=2)
-image.plot(x=lons[lonsi],y=lats[latsi],chl_trend,zlim=c(-0.1,0.1),col=redblue(20))
-  map(add=TRUE)
+image.plot(x=lons[lonsi],y=lats[latsi],DAT$chl_trend,zlim=c(-0.1,0.1),col=redblue(20))
+  maps::map(add=TRUE)
   mtext(expression('d) Chlorophyll trend [mgChl/m'^3*'/yr]'), adj=0,line=0.25)
   box(lwd=2)
 image.plot(x=lons[lonsi],y=lats[latsi],dBIC_scl,zlim=c(0,10),col=turbo(20))
-  map(add=TRUE)
+  maps::map(add=TRUE)
   mtext(expression('b) '*Delta*'BIC Scale'~sigma~'[mgChl/m'^3*']'), adj=0,line=0.25)
   box(lwd=2)
-image.plot(x=lons[lonsi],y=lats[latsi],sst_trend,zlim=c(-0.2,0.2),col=redblue(20))
-  map(add=TRUE)
+image.plot(x=lons[lonsi],y=lats[latsi],DAT$sst_trend,zlim=c(-0.2,0.2),col=redblue(20))
+  maps::map(add=TRUE)
   mtext(expression('e) Sea Surface Temperature trend ['*degree*'C/yr]'), adj=0,line=0.25)
   box(lwd=2)
 image.plot(x=lons[lonsi],y=lats[latsi],dBIC_shp,zlim=c(0,10),col=turbo(20))
-  map(add=TRUE)
+  maps::map(add=TRUE)
   mtext(expression('c) '*Delta*'BIC Shape'~xi~'[unitless]'), adj=0,line=0.25)
   box(lwd=2)
 mtext('Latitude',side=2,outer=TRUE,line=0.5)
@@ -389,10 +379,151 @@ mtext('Longitude',side=1,outer=TRUE)
 dev.off()
 
 
-##########################################################################
-##--BASIN MASKS--#########################################################
-##########################################################################
-nc <- nc_open('~/dropbox/data/masks/mask.nc')
-image.plot(ncvar_get(nc,'atlantic'))
+
+##--MAP OF NONSTATIONARY PARAMETERS--#####################################
+redblue <- colorRampPalette(c('dark blue','blue','white','red','dark red'))
+
+pdf('~/dropbox/working/chlorophyll/plots/gevd_trends_location_scale_shape.pdf',height=4.5,width=14)
+par(mfrow=c(1,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
+
+image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$location_trnd,zlim=c(-0.25,0.25),col=redblue(12))
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1); axis(side=2)
+  box(lwd=3)
+  mtext(expression('a) Location'),adj=0,line=0.5)
+
+image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$scale_trnd,zlim=c(-0.25,0.25),col=redblue(12))
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1); axis(side=2,labels=NA)
+  box(lwd=3)
+  mtext(expression('b) Scale'),adj=0,line=0.5)
+
+image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$shape_trnd,zlim=c(-0.25,0.25),col=redblue(12))
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1); axis(side=2,labels=NA)
+  box(lwd=3)
+  axis(side=1); axis(side=2,labels=NA)
+  mtext(expression('b) Scale'),adj=0,line=0.5)
+  
+  mtext('Latitude',outer=TRUE,side=2,line=1.5,cex=1.2)
+  mtext('Longitude',outer=TRUE,side=1,line=1.5,cex=1.2)
+  
+#####################################################################################################
+##--MAP OF NONSTATIONARY PARAMETERS WHERE SIGNIFICANT AND WITH CORRELATIONS--########################
+#####################################################################################################
+loc_sig <- DAT$location_trnd
+loc_sig[dBIC_loc<2] <- NA
+scl_sig <- DAT$scale_trnd
+scl_sig[dBIC_scl<2] <- NA
+shp_sig <- DAT$shape_trnd
+shp_sig[dBIC_shp<2] <- NA
+
+
+par(mfcol=c(3,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
+image.plot2(x=lons[lonsi],y=lats[latsi],z=loc_sig,zlim=c(-0.25,0.25),col=redblue(12))
+maps::map(add=TRUE,col='grey',fill=TRUE)
+axis(side=1); axis(side=2)
+box(lwd=3)
+mtext(expression('a) Location'),adj=0,line=0.5)
+
+image.plot2(x=lons[lonsi],y=lats[latsi],z=scl_sig,zlim=c(-0.25,0.25),col=redblue(12))
+maps::map(add=TRUE,col='grey',fill=TRUE)
+axis(side=1); axis(side=2,labels=NA)
+box(lwd=3)
+mtext(expression('b) Scale'),adj=0,line=0.5)
+
+image.plot2(x=lons[lonsi],y=lats[latsi],z=shp_sig,zlim=c(-0.25,0.25),col=redblue(12))
+maps::map(add=TRUE,col='grey',fill=TRUE)
+axis(side=1); axis(side=2,labels=NA)
+box(lwd=3)
+axis(side=1); axis(side=2,labels=NA)
+mtext(expression('b) Shape'),adj=0,line=0.5)
+
+mtext('Latitude',outer=TRUE,side=2,line=1.5,cex=1.2)
+mtext('Longitude',outer=TRUE,side=1,line=1.5,cex=1.2)
+
+
+par(mfrow=c(2,3))
+
+scat <- function(x,N,ylim){
+  y <- x %>% drop_na()
+  bins <- stats.bin(x=y$x,y=y$y,N=N,breaks=seq(quantile(y$x,0.05,na.rm=TRUE),quantile(y$x,0.95,na.rm=TRUE),length.out=N))
+  plot(bins$centers,bins$stats[2,],ylim=ylim)
+}
+
+scat(data.frame(x=c(DAT$chl_trend),y=c(loc_sig)),N=50,ylim=c(-0.05,0.2))
+scat(data.frame(x=c(DAT$chl_trend),y=c(scl_sig)),N=50,ylim=c(-0.1,0.1))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+scat(data.frame(x=c(DAT$chl_trend),y=c(shp_sig)),N=50,ylim=c(-0.1,0.1))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+
+plot_samp <- function(x,N){
+  y <- x %>% drop_na() 
+  samp <- sample(1:length(y$x),size=N,replace=TRUE)
+  plot(y$x[samp],y$y[samp],pch=19,cex=0.3)
+}
+plot_samp(data.frame(x=c(DAT$chl_trend),y=c(loc_sig)),N=1000)
+
+
+plot(c(DAT$chl_trend),c(loc_sig))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+plot(c(DAT$chl_trend),c(scl_sig),ylim=c(-2,2))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+plot(c(DAT$chl_trend),c(shp_sig),ylim=c(-2,2))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+
+plot(c(DAT$sst_trend),c(loc_sig))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+plot(c(DAT$sst_trend),c(scl_sig),ylim=c(-2,2))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+plot(c(DAT$sst_trend),c(shp_sig),ylim=c(-2,2))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+
+
+##--CALCULATE CORRELATIONS BETWEEN ENVIRONMENTAL AND PARAMETER TRENDS--########### 
+cor(c(DAT$chl_trend),c(loc_sig),use='pairwise.complete.obs')#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+cor(c(DAT$chl_trend),c(scl_sig),use='pairwise.complete.obs')#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+cor(c(DAT$chl_trend),c(shp_sig),use='pairwise.complete.obs')#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+
+cor(c(DAT$sst_trend),c(loc_sig),use='pairwise.complete.obs')#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+cor(c(DAT$sst_trend),c(scl_sig),use='pairwise.complete.obs')#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+cor(c(DAT$sst_trend),c(shp_sig),use='pairwise.complete.obs')#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+
+  
+
+pdf('~/dropbox/working/chlorophyll/plots/nonstationary_delta_theta_delta_chl_sst.pdf',height=7,width=8)
+par(mfrow=c(3,2),mar=c(1,1,2,4),oma=c(4,4,2,2))
+image.plot2(x=lons[lonsi],y=lats[latsi],z=loc_sig,zlim=c(-0.25,0.25),col=redblue(12))
+maps::map(add=TRUE,col='grey',fill=TRUE)
+axis(side=1,labels=NA); axis(side=2)
+box(lwd=3)
+mtext(expression('a) Location trend [mgChl/m'^3*'/yr]'),adj=0,line=0.25)
+
+image.plot2(x=lons[lonsi],y=lats[latsi],DAT$chl_trend,zlim=c(-0.1,0.1),col=redblue(20))
+maps::map(add=TRUE,col='grey',fill=TRUE)
+axis(side=1,labels=NA); axis(side=2,labels=NA)
+mtext(expression('d) Chlorophyll trend [mgChl/m'^3*'/yr]'), adj=0,line=0.25)
+box(lwd=2)
+
+image.plot2(x=lons[lonsi],y=lats[latsi],z=scl_sig,zlim=c(-0.25,0.25),col=redblue(12))
+maps::map(add=TRUE,col='grey',fill=TRUE)
+axis(side=1,labels=NA); axis(side=2)
+box(lwd=3)
+mtext(expression('b) Scale trend [mgChl/m'^3*'/yr]'),adj=0,line=0.25)
+
+image.plot2(x=lons[lonsi],y=lats[latsi],DAT$sst_trend,zlim=c(-0.2,0.2),col=redblue(20))
+maps::map(add=TRUE,col='grey',fill=TRUE)
+axis(side=1); axis(side=2,labels=NA)
+mtext(expression('e) Sea Surface Temperature trend ['*degree*'C/yr]'), adj=0,line=0.25)
+box(lwd=2)
+
+image.plot2(x=lons[lonsi],y=lats[latsi],z=shp_sig,zlim=c(-0.25,0.25),col=redblue(12))
+maps::map(add=TRUE,col='grey',fill=TRUE)
+axis(side=1); axis(side=2)
+box(lwd=3)
+axis(side=1); axis(side=2,labels=NA)
+mtext(expression('c) Shape trend [/yr]'),adj=0,line=0.25)
+
+mtext(side=1,'Longitude',line=1.0,outer=TRUE)
+mtext(side=2,'Latitude',line=1.5,outer=TRUE)
+
+dev.off()
+
+
+
+
+axis(side=1,labels=NA); axis(side=2)
 
 
