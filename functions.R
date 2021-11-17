@@ -7,7 +7,6 @@ image.plot2 <- function(x,y,z,zlim,cols){
 }
 
 
-
 ##--BINLINEAR INTERPOLATION--#####################
 resize_bilinear <- function(xin,yin,xout,yout,z){
   library(fields)

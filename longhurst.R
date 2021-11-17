@@ -31,8 +31,6 @@ longrast <- fasterize(longshp,r0,field="NUM")
 longmat  <- t(as.matrix(longrast))[,(180*4):1]
 
 ##--PLOT--############################
-#image.plot(lons[lonsi],lats[latsi],longmat[lonsi,latsi],col=turbo(20))
-
 pdf('~/dropbox/working/chlorophyll/plots/gevd_parameter_maps_longhurst.pdf',height=4.5,width=14)
 par(mfrow=c(1,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
 image.plot2(x=lons[lonsi],y=lats[latsi],DAT$location,zlim=c(0,4),col=turbo(20))
@@ -40,7 +38,6 @@ image.plot2(x=lons[lonsi],y=lats[latsi],DAT$location,zlim=c(0,4),col=turbo(20))
   map(add=TRUE,col='grey',fill=TRUE)
   axis(side=1); axis(side=2)
   box(lwd=3)
-  #mtext('Doubling Sample Size',line=0.5)
   mtext(expression('a) Location'~mu),adj=0,line=0.5)
   mtext(expression('[mgChl/m'^3*']'),adj=1.1,line=0.25)
   
@@ -49,7 +46,6 @@ image.plot2(x=lons[lonsi],y=lats[latsi],scale,zlim=c(0,2),col=turbo(20))
   map(add=TRUE,col='grey',fill=TRUE)
   axis(side=1); axis(side=2,labels=NA)
   box(lwd=3)
-  #mtext('Doubling Sample Size',line=0.5)
   mtext(expression('b) Scale'~sigma),adj=0,line=0.5)
   mtext(expression('[mgChl/m'^3*']'),adj=1.1,line=0.25)
   
@@ -68,6 +64,5 @@ image.plot2(x=lons[lonsi],y=lats[latsi],shape,zlim=c(0,2.5),col=turbo(20))
 dev.off()
 
 
-  
   
   

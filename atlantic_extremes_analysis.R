@@ -52,11 +52,6 @@ print(i)
     sst_atl[,,i] <- sst[lonsi,latsi,i]
 }
 
-##--COMPUTE MEAN, MEDIANS, SDS--########################################
-# chl_avg     <- apply(chl,c(1,2),function(x) mean(x, na.rm=TRUE))
-# chl_atl_avg <- apply(chl_atl,c(1,2),function(x) mean(x, na.rm=TRUE))
-# chl_atl_sd  <- apply(chl_atl,c(1,2),function(x) sd(x, na.rm=TRUE))
-# chl_atl_med <- apply(chl_atl,c(1,2),function(x) median(x, na.rm=TRUE))
 
 ###################################################################################
 ##--FIT GEVDS--####################################################################

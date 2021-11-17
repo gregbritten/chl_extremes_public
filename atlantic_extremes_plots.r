@@ -34,24 +34,7 @@ image.plot2 <- function(x,y,z,zlim,cols){
   image.plot(x=x,y=y,z=tmp,zlim=zlim,col=cols,xaxt='n',yaxt='n',ylab='',xlab='')
 }
 
-# Xloc <- data.frame(mod=c(DAT$location),occi=c(DAT_oc$location))
-# Xscl <- data.frame(mod=c(DAT$scale),   occi=c(DAT_oc$scale))
-# Xshp <- data.frame(mod=c(DAT$shape),   occi=c(DAT_oc$shape))
-# 
-# #remove outliers from pathological fits
-# Xloc$mod[Xloc$mod<0]   = Xloc$occi[Xloc$occi<0]   = Xloc$mod[Xloc$mod>10] = Xloc$occi[Xloc$occi>10] <- NA
-# Xscl$mod[Xscl$mod< -2] = Xscl$occi[Xscl$occi< -2] = Xscl$mod[Xscl$mod>4]  = Xscl$occi[Xscl$occi>4] <- NA
-# Xshp$mod[Xshp$mod<0]   = Xshp$occi[Xshp$occi<0]   = Xshp$mod[Xshp$mod>8]  = Xshp$occi[Xshp$occi>8] <- NA
-# 
-# Xloc <- Xloc[complete.cases(Xloc),]
-# Xscl <- Xscl[complete.cases(Xscl),]
-# Xshp <- Xshp[complete.cases(Xshp),]
-# 
-# samp <- sample(size=500,1:nrow(Xloc))  
-# par(mfrow=c(1,3))
-# plot(Xloc$mod[samp],Xloc$occi[samp],ylim=c(0,4),xlim=c(0,4))
-# plot(Xscl$mod[samp],Xscl$occi[samp],ylim=c(-1,2),xlim=c(-1,2))
-# plot(Xshp$mod[samp],Xshp$occi[samp],ylim=c(0,4),xlim=c(0,4))
+
 
 ##########################################################################  
 ##--MONTH OF BLOOM--######################################################
@@ -67,6 +50,8 @@ par(mfrow=c(1,1), oma=c(2,2,2,2))
       mtext(side=1,line=2.5,'Longitude')
       mtext(side=2,line=2.5,'Latitude')
 dev.off()
+
+
 
 
 ##########################################################################  
@@ -105,6 +90,9 @@ par(mfrow=c(1,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
   mtext('Longitude',outer=TRUE,side=1,line=1.5,cex=1.2)
 dev.off()
 
+
+
+
 ##########################################################################  
 ##--FITTED PARAMETER SES--################################################
 ########################################################################## 
@@ -138,6 +126,7 @@ par(mfrow=c(1,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
   mtext('Latitude',outer=TRUE,side=2,line=1.5,cex=1.2)
   mtext('Longitude',outer=TRUE,side=1,line=1.5,cex=1.2)
 dev.off()
+
 
 
 
@@ -301,6 +290,9 @@ par(mfrow=c(2,3),mar=c(2,2,2,2),oma=c(2,2,2,2))
 dev.off()
 
 
+
+
+
 #########################################################################################
 ##--QQ PLOT GOONESS OF FIT--#############################################################
 #########################################################################################
@@ -311,9 +303,7 @@ XX  <- X2[sample(size=5000,1:nrow(X2)),]             #take a random sample for p
 cor(X2[,1],X2[,2],use='pairwise.complete.obs') #evaluate correlation
 cor(log10(X2[,1]),log10(X2[,2]),use='pairwise.complete.obs')
 
-pdf('~/dropbox/working/chlorophyll/plots/qqplot.pdf',height=4.5, width=9)
-#pdf('~/dropbox/working/chlorophyll/plots/qqplot_oc.pdf',height=4.5, width=9)
-#layout(matrix(c(1,2,3,3),byrow=TRUE,ncol=2))
+pdf(paste0('~/dropbox/working/chlorophyll/plots/qqplot',ocyn,'.pdf',height=4.5, width=9))
 par(mfrow=c(1,2),mar=c(2,3,2,2),oma=c(2,2,2,2),cex.axis=0.8)
   plot(XX[,1],XX[,2],xlim=c(0,10),ylim=c(0,10),pch=16,cex=0.2,bty='n')
   abline(0,1)
@@ -328,11 +318,13 @@ par(mfrow=c(1,2),mar=c(2,3,2,2),oma=c(2,2,2,2),cex.axis=0.8)
   mtext('b)',adj=-0.1)
 dev.off()
 
+
+
+
 #########################################################################################
 ##--QQ MAPS--############################################################################
 #########################################################################################
-#pdf('~/dropbox/working/chlorophyll/plots/qqmap.pdf',height=5,width=9)
-pdf('~/dropbox/working/chlorophyll/plots/qqmap_oc.pdf',height=5,width=9)
+pdf(paste0('~/dropbox/working/chlorophyll/plots/qqmap',ocyn,'.pdf',height=5,width=9))
 par(mfrow=c(1,1))
   image.plot(x=lons[lonsi],y=lats[latsi],DAT$cormap,col=turbo(20),zlim=c(0.7,1.0),xlab='',ylab='')
   maps::map(add=TRUE,col='grey',fill=TRUE)
@@ -340,6 +332,11 @@ par(mfrow=c(1,1))
   mtext(side=1,'Longitude',line=2.5)
   mtext(side=2,'Latitude',line=2.5)
 dev.off()
+
+
+
+
+
 #########################################################################################
 ##--NON-STATIONARY & TRENDS--############################################################
 #########################################################################################
@@ -379,8 +376,9 @@ mtext('Longitude',side=1,outer=TRUE)
 dev.off()
 
 
-
+##########################################################################
 ##--MAP OF NONSTATIONARY PARAMETERS--#####################################
+##########################################################################
 redblue <- colorRampPalette(c('dark blue','blue','white','red','dark red'))
 
 pdf('~/dropbox/working/chlorophyll/plots/gevd_trends_location_scale_shape.pdf',height=4.5,width=14)
@@ -408,6 +406,8 @@ image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$shape_trnd,zlim=c(-0.25,0.25),col=
   mtext('Latitude',outer=TRUE,side=2,line=1.5,cex=1.2)
   mtext('Longitude',outer=TRUE,side=1,line=1.5,cex=1.2)
   
+  
+  
 #####################################################################################################
 ##--MAP OF NONSTATIONARY PARAMETERS WHERE SIGNIFICANT AND WITH CORRELATIONS--########################
 #####################################################################################################
@@ -421,56 +421,61 @@ shp_sig[dBIC_shp<2] <- NA
 
 par(mfcol=c(3,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
 image.plot2(x=lons[lonsi],y=lats[latsi],z=loc_sig,zlim=c(-0.25,0.25),col=redblue(12))
-maps::map(add=TRUE,col='grey',fill=TRUE)
-axis(side=1); axis(side=2)
-box(lwd=3)
-mtext(expression('a) Location'),adj=0,line=0.5)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1); axis(side=2)
+  box(lwd=3)
+  mtext(expression('a) Location'),adj=0,line=0.5)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=scl_sig,zlim=c(-0.25,0.25),col=redblue(12))
-maps::map(add=TRUE,col='grey',fill=TRUE)
-axis(side=1); axis(side=2,labels=NA)
-box(lwd=3)
-mtext(expression('b) Scale'),adj=0,line=0.5)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1); axis(side=2,labels=NA)
+  box(lwd=3)
+  mtext(expression('b) Scale'),adj=0,line=0.5)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=shp_sig,zlim=c(-0.25,0.25),col=redblue(12))
-maps::map(add=TRUE,col='grey',fill=TRUE)
-axis(side=1); axis(side=2,labels=NA)
-box(lwd=3)
-axis(side=1); axis(side=2,labels=NA)
-mtext(expression('b) Shape'),adj=0,line=0.5)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1); axis(side=2,labels=NA)
+  box(lwd=3)
+  axis(side=1); axis(side=2,labels=NA)
+  mtext(expression('b) Shape'),adj=0,line=0.5)
 
-mtext('Latitude',outer=TRUE,side=2,line=1.5,cex=1.2)
-mtext('Longitude',outer=TRUE,side=1,line=1.5,cex=1.2)
-
-
-par(mfrow=c(2,3))
-
-scat <- function(x,N,ylim){
-  y <- x %>% drop_na()
-  bins <- stats.bin(x=y$x,y=y$y,N=N,breaks=seq(quantile(y$x,0.05,na.rm=TRUE),quantile(y$x,0.95,na.rm=TRUE),length.out=N))
-  plot(bins$centers,bins$stats[2,],ylim=ylim)
-}
-
-scat(data.frame(x=c(DAT$chl_trend),y=c(loc_sig)),N=50,ylim=c(-0.05,0.2))
-scat(data.frame(x=c(DAT$chl_trend),y=c(scl_sig)),N=50,ylim=c(-0.1,0.1))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
-scat(data.frame(x=c(DAT$chl_trend),y=c(shp_sig)),N=50,ylim=c(-0.1,0.1))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
-
-plot_samp <- function(x,N){
-  y <- x %>% drop_na() 
-  samp <- sample(1:length(y$x),size=N,replace=TRUE)
-  plot(y$x[samp],y$y[samp],pch=19,cex=0.3)
-}
-plot_samp(data.frame(x=c(DAT$chl_trend),y=c(loc_sig)),N=1000)
+  mtext('Latitude',outer=TRUE,side=2,line=1.5,cex=1.2)
+  mtext('Longitude',outer=TRUE,side=1,line=1.5,cex=1.2)
 
 
-plot(c(DAT$chl_trend),c(loc_sig))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
-plot(c(DAT$chl_trend),c(scl_sig),ylim=c(-2,2))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
-plot(c(DAT$chl_trend),c(shp_sig),ylim=c(-2,2))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
-
-plot(c(DAT$sst_trend),c(loc_sig))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
-plot(c(DAT$sst_trend),c(scl_sig),ylim=c(-2,2))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
-plot(c(DAT$sst_trend),c(shp_sig),ylim=c(-2,2))#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
-
+##################################################################################################
+##--SCATTERPLOTS PARAMETER RATE OF CHANGE VS CHL AND SST RATE OF CHANGE--#########################
+##################################################################################################
+pdf('~/dropbox/working/chlorophyll/plots/scatter_parameter_trends.pdf',height=6,width=9)
+par(mfrow=c(2,3),mar=c(2,2,4,2),oma=c(2,2,2,2))
+plot(c(DAT$chl_trend),c(loc_sig),pch=19,cex=0.1)#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+  #abline(lm(c(loc_sig) ~ c(DAT$chl_trend)))
+  mtext(adj=0.1,line=-2,bquote('r ='~.(round(cor(c(DAT$chl_trend),c(loc_sig),use='pairwise.complete.obs'),3))))  
+  mtext(side=2,line=2.5,'Location Parameter Trend')
+    
+plot(c(DAT$chl_trend),c(scl_sig),ylim=c(-2,2),pch=19,cex=0.1)#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+  mtext(adj=0.1,line=-2,bquote('r ='~.(round(cor(c(DAT$chl_trend),c(scl_sig),use='pairwise.complete.obs'),3))))  
+  mtext(side=1,expression('Chlorophyll trend [mgChl/m'^3*'/yr]'),line=3)
+  mtext(side=2,line=2.5,'Scale Parameter Trend')
+  
+plot(c(DAT$chl_trend),c(shp_sig),ylim=c(-2,2),pch=19,cex=0.1)#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+  mtext(adj=0.1,line=-2,bquote('r ='~.(round(cor(c(DAT$chl_trend),c(shp_sig),use='pairwise.complete.obs'),3))))  
+  mtext(side=2,line=2.5,'Shape Parameter Trend')
+  
+plot(c(DAT$sst_trend),c(loc_sig),pch=19,cex=0.1)#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+  mtext(adj=0.1,line=-2,bquote('r ='~.(round(cor(c(DAT$sst_trend),c(loc_sig),use='pairwise.complete.obs'),3))))  
+  mtext(side=2,line=2.5,'Location Parameter Trend')
+  
+plot(c(DAT$sst_trend),c(scl_sig),ylim=c(-2,2),pch=19,cex=0.1)#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+  mtext(adj=0.1,line=-2,bquote('r ='~.(round(cor(c(DAT$sst_trend),c(scl_sig),use='pairwise.complete.obs'),3))))  
+  mtext(side=2,line=2.5,'Scale Parameter Trend')
+  mtext(side=1,expression('Sea Surface Temperature trend ['*degree*'C/yr]'),line=3)
+  
+plot(c(DAT$sst_trend),c(shp_sig),ylim=c(-2,2),pch=19,cex=0.1)#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
+  mtext(adj=0.1,line=-2,bquote('r ='~.(round(cor(c(DAT$sst_trend),c(shp_sig),use='pairwise.complete.obs'),3))))  
+  mtext(side=2,line=2.5,'Shape Parameter Trend')
+dev.off()  
+  
 
 ##--CALCULATE CORRELATIONS BETWEEN ENVIRONMENTAL AND PARAMETER TRENDS--########### 
 cor(c(DAT$chl_trend),c(loc_sig),use='pairwise.complete.obs')#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
@@ -481,49 +486,49 @@ cor(c(DAT$sst_trend),c(loc_sig),use='pairwise.complete.obs')#,xlim=c(-0.4,0.4),y
 cor(c(DAT$sst_trend),c(scl_sig),use='pairwise.complete.obs')#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
 cor(c(DAT$sst_trend),c(shp_sig),use='pairwise.complete.obs')#,xlim=c(-0.4,0.4),ylim=c(-0.4,0.4))  
 
-  
 
+
+
+################################################################################################
+##--MAPS PARAMETER RATES OF CHANGE VS RATES OF CHANGE IN CHL AND SST--##########################
+################################################################################################
 pdf('~/dropbox/working/chlorophyll/plots/nonstationary_delta_theta_delta_chl_sst.pdf',height=7,width=8)
 par(mfrow=c(3,2),mar=c(1,1,2,4),oma=c(4,4,2,2))
-image.plot2(x=lons[lonsi],y=lats[latsi],z=loc_sig,zlim=c(-0.25,0.25),col=redblue(12))
-maps::map(add=TRUE,col='grey',fill=TRUE)
-axis(side=1,labels=NA); axis(side=2)
-box(lwd=3)
-mtext(expression('a) Location trend [mgChl/m'^3*'/yr]'),adj=0,line=0.25)
+  image.plot2(x=lons[lonsi],y=lats[latsi],z=loc_sig,zlim=c(-0.25,0.25),col=redblue(12))
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1,labels=NA); axis(side=2)
+  box(lwd=3)
+  mtext(expression('a) Location trend [mgChl/m'^3*'/yr]'),adj=0,line=0.25)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],DAT$chl_trend,zlim=c(-0.1,0.1),col=redblue(20))
-maps::map(add=TRUE,col='grey',fill=TRUE)
-axis(side=1,labels=NA); axis(side=2,labels=NA)
-mtext(expression('d) Chlorophyll trend [mgChl/m'^3*'/yr]'), adj=0,line=0.25)
-box(lwd=2)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1,labels=NA); axis(side=2,labels=NA)
+  mtext(expression('d) Chlorophyll trend [mgChl/m'^3*'/yr]'), adj=0,line=0.25)
+  box(lwd=2)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=scl_sig,zlim=c(-0.25,0.25),col=redblue(12))
-maps::map(add=TRUE,col='grey',fill=TRUE)
-axis(side=1,labels=NA); axis(side=2)
-box(lwd=3)
-mtext(expression('b) Scale trend [mgChl/m'^3*'/yr]'),adj=0,line=0.25)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1,labels=NA); axis(side=2)
+  box(lwd=3)
+  mtext(expression('b) Scale trend [mgChl/m'^3*'/yr]'),adj=0,line=0.25)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],DAT$sst_trend,zlim=c(-0.2,0.2),col=redblue(20))
-maps::map(add=TRUE,col='grey',fill=TRUE)
-axis(side=1); axis(side=2,labels=NA)
-mtext(expression('e) Sea Surface Temperature trend ['*degree*'C/yr]'), adj=0,line=0.25)
-box(lwd=2)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1); axis(side=2,labels=NA)
+  mtext(expression('e) Sea Surface Temperature trend ['*degree*'C/yr]'), adj=0,line=0.25)
+  box(lwd=2)
 
 image.plot2(x=lons[lonsi],y=lats[latsi],z=shp_sig,zlim=c(-0.25,0.25),col=redblue(12))
-maps::map(add=TRUE,col='grey',fill=TRUE)
-axis(side=1); axis(side=2)
-box(lwd=3)
-axis(side=1); axis(side=2,labels=NA)
-mtext(expression('c) Shape trend [/yr]'),adj=0,line=0.25)
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1); axis(side=2)
+  box(lwd=3)
+  axis(side=1); axis(side=2,labels=NA)
+  mtext(expression('c) Shape trend [/yr]'),adj=0,line=0.25)
 
-mtext(side=1,'Longitude',line=1.0,outer=TRUE)
-mtext(side=2,'Latitude',line=1.5,outer=TRUE)
-
+  mtext(side=1,'Longitude',line=1.0,outer=TRUE)
+  mtext(side=2,'Latitude',line=1.5,outer=TRUE)
 dev.off()
 
 
-
-
-axis(side=1,labels=NA); axis(side=2)
 
 

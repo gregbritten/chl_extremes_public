@@ -37,7 +37,7 @@ for(i in 1:dim(sst)[3]){
 ###################################################################################
 ##--FIND MEANS AND STANDARD DEVIATIONS--###########################################
 ###################################################################################
-means=sds=medians  <- matrix(NA,nrow=nlon,ncol=nlat)
+means=sds=medians=arcor  <- matrix(NA,nrow=nlon,ncol=nlat)
 
 for(i in 1:nlon){ print(i)
   for(j in 1:nlat){
@@ -53,10 +53,36 @@ for(i in 1:nlon){ print(i)
       means[i,j]   <- mean(maxima)
       sds[i,j]     <- sd(maxima)
       medians[i,j] <- median(maxima)
-      
+      arcor[i,j]   <- cor(maxima[2:19],maxima[1:18])
     }
   }
 }
+
+###############################################
+##--CORRELATION COEFFICIENT--##################
+###############################################
+redblue <- colorRampPalette(c('dark blue','blue','white','red','dark red'))
+
+
+pdf('~/dropbox/working/chlorophyll/plots/autocorrelation_map.pdf',height=4.5,width=9)
+par(mfrow=c(1,2),mar=c(1,1,2,4),oma=c(4,4,2,2))
+image.plot2(x=lons[lonsi], y=lats[latsi], z=arcor, zlim=c(-1,1), col=redblue(20))
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1); axis(side=2)
+  box(lwd=3)
+  mtext('a) Autocorrelation coeficient',adj=0)
+
+arcor_sig <- arcor
+arcor_sig[abs(arcor_sig)<0.44] <- NA
+image.plot2(x=lons[lonsi], y=lats[latsi], z=arcor_sig, zlim=c(-1,1), col=redblue(20))
+  maps::map(add=TRUE,col='grey',fill=TRUE)
+  axis(side=1); axis(side=2,labels=NA)
+  box(lwd=3)
+  mtext('b) Autocorrelation coeficient (r>0.44)',adj=0)
+  mtext(side=1,outer=TRUE,'Longitude',line=1.0)
+  mtext(side=2,outer=TRUE,'Latitude',line=1.0)
+dev.off()
+
 
 med_sd <- stats.bin(x=c(medians),y=c(sds),breaks=seq(0,10,length.out=100))
   medsdx  <- med_sd$centers
@@ -118,4 +144,18 @@ plot(medsdx, medsdmu,pch=19,xlim=c(0,10),ylim=c(0,14))
   mtext(side=1,line=2.5,'Median Extreme')
   mtext(adj=0,'b)')
 dev.off()  
+
+par(mfrow=c(1,2),oma=c(2,2,2,2),mar=c(2,2,2,2))
+plot(meansdx,meansdmu,xlim=c(0,10),ylim=c(0,14),pch=19)
+segments(x0=meansdx,x1=meansdx,y0=meansdmu - meansdsd, y1=meansdmu + meansdsd)
+mtext(side=1,line=2.5,'Mean Extreme')
+mtext(side=2,line=2.5,'Standard Deviation of Extremes')
+mtext(adj=0,'a)')
+plot(medsdx, medsdmu,pch=19,xlim=c(0,10),ylim=c(0,14))
+segments(x0=medsdx, x1=medsdx,y0=medsdmu - medsdsd, y1=medsdmu + medsdsd)
+mtext(side=1,line=2.5,'Median Extreme')
+mtext(adj=0,'b)')
+
+
+
 
