@@ -2,39 +2,18 @@ rm(list=ls())
 gc()
 
 library(maps)
-setwd('~/dropbox/working/chlorophyll/data/')
 
-load('ATL_DAT.rdata')
+source('functions.r')
+
+load_data(modis=FALSE,oc=FALSE,bathy=TRUE)
+
+load('data/ATL_DAT.rdata')
 DAT <- DAT
-#load('ATL_DAT_oc.rdata')
-# DAT <- DAT_oc
-
-#ocyn <- '_oc'
 ocyn <- ''
 
-lats <- seq(-90,90,length.out=720)
-lons <- seq(-180,180,length.out=1440)
-
-latsi <- which(lats > 35 & lats < 80)
-lonsi <- which(lons > -75 & lons < 35)
-nlat  <- length(latsi)
-nlon  <- length(lonsi)
-
-file  <- 'GEBCO_BATHY_2002-01-01_rgb_1440x720.csv' 
-bathy <- as.matrix(read.csv(file,header=FALSE))
-bathy[bathy==99999] <- NA
-bathy     <- -t(bathy)[,720:1]
-bathy_atl <- bathy[lonsi,latsi]
-
-##--PLOTTING FUNCTION--#####################
-image.plot2 <- function(x,y,z,zlim,cols){
-  tmp <- z
-  tmp[tmp<zlim[1]] <- zlim[1]
-  tmp[tmp>zlim[2]] <- zlim[2]
-  image.plot(x=x,y=y,z=tmp,zlim=zlim,col=cols,xaxt='n',yaxt='n',ylab='',xlab='')
-}
-
-
+load('data/ATL_DAT_oc.rdata')
+DAT <- DAT_oc
+ocyn <- '_oc'
 
 ##########################################################################  
 ##--MONTH OF BLOOM--######################################################
@@ -50,9 +29,6 @@ par(mfrow=c(1,1), oma=c(2,2,2,2))
       mtext(side=1,line=2.5,'Longitude')
       mtext(side=2,line=2.5,'Latitude')
 dev.off()
-
-
-
 
 ##########################################################################  
 ##--MAP FITTED PARAMETERS--###############################################
@@ -128,8 +104,6 @@ par(mfrow=c(1,3),mar=c(1,1,2,4),oma=c(4,4,2,2))
 dev.off()
 
 
-
-
 ##########################################################################  
 ##--POWER ANALYSIS--######################################################
 ########################################################################## 
@@ -201,10 +175,6 @@ image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$shape_doub_se/DAT$shape_doub,zlim=
     mtext('Latitude',outer=TRUE,side=2,line=1.5,cex=1.2)
     mtext('Longitude',outer=TRUE,side=1,line=1.5,cex=1.2)
 dev.off()
-
-
-
-
 
 
 ################################################################
@@ -289,10 +259,6 @@ par(mfrow=c(2,3),mar=c(2,2,2,2),oma=c(2,2,2,2))
   legend('topleft',legend=bquote(italic('y')*' = '*.(slp)*italic('x')*' + '*.(int)),bty='n')
 dev.off()
 
-
-
-
-
 #########################################################################################
 ##--QQ PLOT GOONESS OF FIT--#############################################################
 #########################################################################################
@@ -318,9 +284,6 @@ par(mfrow=c(1,2),mar=c(2,3,2,2),oma=c(2,2,2,2),cex.axis=0.8)
   mtext('b)',adj=-0.1)
 dev.off()
 
-
-
-
 #########################################################################################
 ##--QQ MAPS--############################################################################
 #########################################################################################
@@ -332,9 +295,6 @@ par(mfrow=c(1,1))
   mtext(side=1,'Longitude',line=2.5)
   mtext(side=2,'Latitude',line=2.5)
 dev.off()
-
-
-
 
 
 #########################################################################################
@@ -405,7 +365,7 @@ image.plot2(x=lons[lonsi],y=lats[latsi],z=DAT$shape_trnd,zlim=c(-0.25,0.25),col=
   
   mtext('Latitude',outer=TRUE,side=2,line=1.5,cex=1.2)
   mtext('Longitude',outer=TRUE,side=1,line=1.5,cex=1.2)
-  
+dev.off()  
   
   
 #####################################################################################################
