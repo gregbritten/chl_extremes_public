@@ -2,18 +2,19 @@ rm(list=ls())
 gc()
 
 library(maps)
-
 source('functions.r')
 
 load_data(modis=FALSE,oc=FALSE,bathy=TRUE)
 
+##--MAKE PLOTS WITH MODIS--#########################
 load('data/ATL_DAT.rdata')
 DAT <- DAT
 ocyn <- ''
 
-load('data/ATL_DAT_oc.rdata')
-DAT <- DAT_oc
-ocyn <- '_oc'
+##--MAKE PLOTS WITH OC-CCI--#########################
+#load('data/ATL_DAT_oc.rdata')
+#DAT <- DAT_oc
+#ocyn <- '_oc'
 
 ##########################################################################  
 ##--MONTH OF BLOOM--######################################################
